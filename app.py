@@ -70,10 +70,18 @@ def is_token_valid(token):
 	else:
 		return False
 
-'''	TODO!!
-@app.route('/userprofile', methods = ['GET'])
+@app.route('/userprofile', methods = ['POST'])
 def get_user_profile():
-'''
+	if not request.json or not 'token' in request.json:
+		abort(403)
+		print vars(request.json)
+	token = request.json['token']
+	print
+	for user in users:
+		if base64.b64encode(user['username'] + user['password']) == token:
+			return jsonify(user)
+	abort(403)
+
 
 if __name__ == '__main__':
     app.run(debug = True)
